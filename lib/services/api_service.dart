@@ -3,12 +3,13 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:template/services/shared_prefs_service.dart';
+import 'package:template/utils/custom_snackbar.dart';
 
 class ApiService {
-  final String devUrl = "http://192.168.10.18:8001";
-  final String prodUrl = "";
+  final String devUrl = "http://10.10.12.54:3001/api/v1";
+  final String prodUrl = "https://api.joinjurnee.com/api/v1";
   static final String imgUrl = "";
-  final bool inDevelopment = true;
+  final bool inDevelopment = false;
   final bool showAPICalls = true;
 
   late final String baseUrl;
@@ -39,7 +40,6 @@ class ApiService {
   Future<http.Response> post(
     String endpoint,
     Map<String, dynamic> data, {
-    bool isMultiPart = false,
     bool authReq = false,
   }) async {
     try {
@@ -48,20 +48,35 @@ class ApiService {
 
       http.Response response;
 
-      if (isMultiPart) {
+      bool hasFile = data.values.any(
+        (value) => value is File? || value is List<File?>,
+      );
+
+      if (hasFile) {
         var request = http.MultipartRequest('POST', uri);
         request.headers.addAll(headers);
 
         for (var entry in data.entries) {
-          if (entry.value is File) {
+          final key = entry.key;
+          final value = entry.value;
+
+          if (value is File) {
             request.files.add(
-              await http.MultipartFile.fromPath(
-                entry.key,
-                (entry.value as File).path,
-              ),
+              await http.MultipartFile.fromPath(key, value.path),
             );
+          } else if (value is List<File?>) {
+            for (var file in value) {
+              if (file == null) {
+                continue;
+              }
+              request.files.add(
+                await http.MultipartFile.fromPath(key, file.path),
+              );
+            }
+          } else if (value is Map) {
+            request.fields[key] = jsonEncode(value);
           } else {
-            request.fields[entry.key] = jsonEncode(entry.value);
+            request.fields[key] = value;
           }
         }
 
@@ -120,21 +135,35 @@ class ApiService {
 
       http.Response response;
 
-      bool hasFile = data.values.any((value) => value is File);
+      bool hasFile = data.values.any(
+        (value) => value is File? || value is List<File?>,
+      );
 
       if (hasFile) {
         var request = http.MultipartRequest('PATCH', uri);
         request.headers.addAll(headers);
 
-        for (final entry in data.entries) {
+        for (var entry in data.entries) {
           final key = entry.key;
           final value = entry.value;
+
           if (value is File) {
             request.files.add(
               await http.MultipartFile.fromPath(key, value.path),
             );
+          } else if (value is List<File?>) {
+            for (var file in value) {
+              if (file == null) {
+                continue;
+              }
+              request.files.add(
+                await http.MultipartFile.fromPath(key, file.path),
+              );
+            }
+          } else if (value is Map) {
+            request.fields[key] = jsonEncode(value);
           } else {
-            request.fields[key] = value.toString();
+            request.fields[key] = value;
           }
         }
 
@@ -190,6 +219,7 @@ class ApiService {
 
   void _checkTokenExpiry(bool authReq, http.Response response) {
     if (response.statusCode == 401 && authReq) {
+      customSnackBar("Session expired! Please login again...");
       // Get.find<AuthController>().logout();
     }
   }
