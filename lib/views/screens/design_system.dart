@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:template/views/base/custom_app_bar.dart';
-import 'package:template/views/base/custom_button.dart';
-import 'package:template/views/base/custom_text_field.dart';
-import 'package:template/views/base/profile_picture.dart';
+import 'package:template/views/widgets/custom_app_bar.dart';
+import 'package:template/views/widgets/custom_button.dart';
+import 'package:template/views/widgets/custom_text_field.dart';
+import 'package:template/views/widgets/profile_picture.dart';
 
 class DesignSystem extends StatelessWidget {
   const DesignSystem({super.key});

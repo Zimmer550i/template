@@ -1,5 +1,5 @@
 import 'package:template/utils/app_colors.dart';
-import 'package:template/views/base/custom_button.dart';
+import 'package:template/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 // ──────────────────────────────────────────────

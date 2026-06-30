@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:template/utils/app_colors.dart';
-import 'package:template/views/base/custom_loading.dart';
+import 'package:template/views/widgets/custom_loading.dart';
 
 class CustomListHandler extends StatelessWidget {
   final Future<void> Function()? onRefresh;
