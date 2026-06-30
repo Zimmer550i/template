@@ -1,4 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:template/utils/app_colors.dart';
+
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+const _activeColor = AppColors.green;
+const _inactiveColor = AppColors.gray;
+const _checkmarkColor = Colors.white;
+const _inactiveBackgroundColor = Colors.transparent;
+
+// Sizing
+const _defaultSize = 28.0;
+const _checkmarkScale = 0.7;
+const _borderWidth = 2.0;
+const _defaultRadius = 6.0;
+
+// Animation
+const _animationDuration = Duration(milliseconds: 200);
+const _animationCurve = Curves.easeInOut;
+
+// ──────────────────────────────────────────────
 
 class CustomCheckBox extends StatefulWidget {
   final bool value;
@@ -12,10 +35,10 @@ class CustomCheckBox extends StatefulWidget {
     super.key,
     required this.value,
     required this.onChanged,
-    this.activeColor = Colors.blue,
-    this.inactiveColor = Colors.grey,
-    this.size = 28.0,
-    this.borderRadius = const BorderRadius.all(Radius.circular(6)),
+    this.activeColor = _activeColor,
+    this.inactiveColor = _inactiveColor,
+    this.size = _defaultSize,
+    this.borderRadius = const BorderRadius.all(Radius.circular(_defaultRadius)),
   });
 
   @override
@@ -28,20 +51,20 @@ class CustomCheckBoxState extends State<CustomCheckBox> {
     return GestureDetector(
       onTap: () => widget.onChanged(!widget.value),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
+        duration: _animationDuration,
+        curve: _animationCurve,
         width: widget.size,
         height: widget.size,
         decoration: BoxDecoration(
-          color: widget.value ? widget.activeColor : Colors.transparent,
+          color: widget.value ? widget.activeColor : _inactiveBackgroundColor,
           borderRadius: widget.borderRadius,
           border: Border.all(
             color: widget.value ? widget.activeColor : widget.inactiveColor,
-            width: 2,
+            width: _borderWidth,
           ),
         ),
         child: widget.value
-            ? Icon(Icons.check, color: Colors.white, size: widget.size * 0.7)
+            ? Icon(Icons.check, color: _checkmarkColor, size: widget.size * _checkmarkScale)
             : null,
       ),
     );

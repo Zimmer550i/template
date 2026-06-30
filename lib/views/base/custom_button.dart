@@ -3,6 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:template/utils/app_texts.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Primary button colors
+final _primaryColor = AppColors.green.shade500;
+final _primaryDisabledColor = AppColors.green.shade300;
+final _primaryTextColor = AppColors.green.shade900;
+final _primaryIconColor = AppColors.green[25]!;
+final _primaryLoaderColor = AppColors.green[50]!;
+
+// Secondary button colors
+final _secondaryColor = AppColors.green[50]!;
+const _secondaryBorderColor = AppColors.green;
+const _secondaryTextColor = AppColors.green;
+const _secondaryIconColor = AppColors.green;
+const _secondaryLoaderColor = AppColors.green;
+
+// Sizing defaults
+const _defaultHeight = 50.0;
+const _defaultWidth = double.infinity;
+const _defaultPadding = 40.0;
+const _defaultRadius = 99.0;
+const _defaultFontSize = 16.0;
+const _defaultIconSize = 24.0;
+const _iconTextSpacing = 8.0;
+
+// Loading
+const _loaderStrokeWidth = 4.0;
+const _loaderPadding = 8.0;
+const _animationDuration = Duration(milliseconds: 100);
+
+// Typography
+final _textStyle = AppTexts.tsmb;
+
+// ──────────────────────────────────────────────
+
 class CustomButton extends StatefulWidget {
   final String text;
   final Function()? onTap;
@@ -23,15 +60,15 @@ class CustomButton extends StatefulWidget {
     this.onTap,
     this.leading,
     this.trailing,
-    this.padding = 40,
-    this.radius = 99,
+    this.padding = _defaultPadding,
+    this.radius = _defaultRadius,
     this.isSecondary = false,
     this.isLoading = false,
     this.isDisabled = false,
-    this.fontSize = 16,
-    this.iconSize = 24,
-    this.height = 50,
-    this.width = double.infinity,
+    this.fontSize = _defaultFontSize,
+    this.iconSize = _defaultIconSize,
+    this.height = _defaultHeight,
+    this.width = _defaultWidth,
   });
 
   @override
@@ -45,38 +82,38 @@ class _CustomButtonState extends State<CustomButton> {
       borderRadius: BorderRadius.circular(widget.radius),
       onTap: widget.isLoading ? null : widget.onTap,
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 100),
+        duration: _animationDuration,
         height: widget.height,
         width: widget.width,
         padding: EdgeInsets.symmetric(horizontal: widget.padding),
         decoration: BoxDecoration(
           color: widget.isSecondary
-              ? AppColors.green[50]
+              ? _secondaryColor
               : widget.isDisabled
-              ? AppColors.green.shade300
-              : AppColors.green.shade500,
+              ? _primaryDisabledColor
+              : _primaryColor,
           borderRadius: BorderRadius.circular(widget.radius),
           border: widget.isSecondary
-              ? Border.all(color: AppColors.green)
+              ? Border.all(color: _secondaryBorderColor)
               : null,
         ),
         child: widget.isLoading
             ? FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(_loaderPadding),
                   child: CircularProgressIndicator(
                     color: widget.isSecondary
-                        ? AppColors.green
-                        : AppColors.green[50],
-                    strokeWidth: 4,
+                        ? _secondaryLoaderColor
+                        : _primaryLoaderColor,
+                    strokeWidth: _loaderStrokeWidth,
                   ),
                 ),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
-                spacing: 8,
+                spacing: _iconTextSpacing,
                 children: [
                   if (widget.leading != null)
                     SvgPicture.asset(
@@ -85,18 +122,18 @@ class _CustomButtonState extends State<CustomButton> {
                       width: widget.iconSize,
                       colorFilter: ColorFilter.mode(
                         widget.isSecondary
-                            ? AppColors.green
-                            : AppColors.green[25]!,
+                            ? _secondaryIconColor
+                            : _primaryIconColor,
                         BlendMode.srcIn,
                       ),
                     ),
                   Text(
                     widget.text,
-                    style: AppTexts.tsmb.copyWith(
+                    style: _textStyle.copyWith(
                       fontSize: widget.fontSize,
                       color: widget.isSecondary
-                          ? AppColors.green
-                          : AppColors.green.shade900,
+                          ? _secondaryTextColor
+                          : _primaryTextColor,
                     ),
                   ),
                   if (widget.trailing != null)
@@ -106,8 +143,8 @@ class _CustomButtonState extends State<CustomButton> {
                       width: widget.iconSize,
                       colorFilter: ColorFilter.mode(
                         widget.isSecondary
-                            ? AppColors.green
-                            : AppColors.green.shade900,
+                            ? _secondaryIconColor
+                            : _primaryTextColor,
                         BlendMode.srcIn,
                       ),
                     ),

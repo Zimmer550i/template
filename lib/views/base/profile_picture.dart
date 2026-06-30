@@ -7,6 +7,34 @@ import 'package:flutter_svg/svg.dart';
 import 'package:template/utils/custom_image_picker.dart';
 import 'package:template/utils/custom_svg.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _progressColor = AppColors.green[400]!;
+final _errorBackgroundColor = AppColors.green[100]!;
+const _errorIconColor = Colors.blue;
+final _placeholderBorderColor = AppColors.green[300]!;
+final _placeholderIconColor = AppColors.green[400]!;
+const _editButtonColor = AppColors.green;
+
+// Sizing
+const _defaultSize = 100.0;
+const _avatarRadius = 100.0;
+const _placeholderPaddingScale = 0.17;
+const _progressStrokeWidth = 2.0;
+const _editButtonSize = 32.0;
+const _editButtonPadding = 8.0;
+const _editButtonOffset = -12.0;
+const _editIconSize = 16.0;
+
+// Icons
+const _placeholderIcon = AppIcons.person;
+const _editIcon = AppIcons.edit;
+
+// ──────────────────────────────────────────────
+
 class ProfilePicture extends StatelessWidget {
   final double size;
   final String? image;
@@ -18,7 +46,7 @@ class ProfilePicture extends StatelessWidget {
   const ProfilePicture({
     super.key,
     this.image,
-    this.size = 100,
+    this.size = _defaultSize,
     this.showLoading = true,
     this.isEditable = false,
     this.imagePickerCallback,
@@ -44,7 +72,7 @@ class ProfilePicture extends StatelessWidget {
         clipBehavior: Clip.none,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(_avatarRadius),
             child: imageFile != null
                 ? Image.file(
                     imageFile!,
@@ -62,8 +90,8 @@ class ProfilePicture extends StatelessWidget {
                         child: Center(
                           child: CircularProgressIndicator(
                             value: progress.progress,
-                            strokeWidth: 2,
-                            color: AppColors.green[400],
+                            strokeWidth: _progressStrokeWidth,
+                            color: _progressColor,
                           ),
                         ),
                       );
@@ -72,8 +100,8 @@ class ProfilePicture extends StatelessWidget {
                       return Container(
                         width: size,
                         height: size,
-                        color: AppColors.green[100],
-                        child: Icon(Icons.error, color: Colors.blue),
+                        color: _errorBackgroundColor,
+                        child: Icon(Icons.error, color: _errorIconColor),
                       );
                     },
                     width: size,
@@ -83,16 +111,16 @@ class ProfilePicture extends StatelessWidget {
                 : Container(
                     width: size,
                     height: size,
-                    padding: EdgeInsets.all(size * 0.17),
+                    padding: EdgeInsets.all(size * _placeholderPaddingScale),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.green[300]!),
+                      border: Border.all(color: _placeholderBorderColor),
                     ),
                     child: Center(
                       child: SvgPicture.asset(
-                        AppIcons.bell,
+                        _placeholderIcon,
                         colorFilter: ColorFilter.mode(
-                          AppColors.green[400]!,
+                          _placeholderIconColor,
                           BlendMode.srcIn,
                         ),
                       ),
@@ -103,17 +131,17 @@ class ProfilePicture extends StatelessWidget {
             Positioned(
               left: 0,
               right: 0,
-              bottom: -12,
+              bottom: _editButtonOffset,
               child: Center(
                 child: Container(
-                  height: 32,
-                  width: 32,
+                  height: _editButtonSize,
+                  width: _editButtonSize,
                   decoration: BoxDecoration(
-                    color: AppColors.green,
+                    color: _editButtonColor,
                     shape: BoxShape.circle,
                   ),
-                  padding: EdgeInsets.all(8),
-                  child: CustomSvg(asset: AppIcons.edit, size: 16),
+                  padding: EdgeInsets.all(_editButtonPadding),
+                  child: CustomSvg(asset: _editIcon, size: _editIconSize),
                 ),
               ),
             ),

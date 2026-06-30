@@ -2,6 +2,34 @@ import 'package:template/utils/app_colors.dart';
 import 'package:template/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _dialogBackgroundColor = AppColors.green[50]!;
+const _titleColor = Color(0xff4b4b4b);
+const _highlightColor = AppColors.green;
+
+// Sizing
+const _dialogRadius = 12.0;
+const _dialogHorizontalInset = 16.0;
+const _contentHorizontalPadding = 16.0;
+const _contentVerticalPadding = 28.0;
+const _titleHighlightSpacing = 4.0;
+const _buttonsTopSpacing = 20.0;
+const _buttonSpacing = 12.0;
+
+// Title typography
+const _titleFontSize = 18.0;
+const _titleFontWeight = 400.0;
+
+// Highlight typography
+const _highlightFontSize = 20.0;
+const _highlightFontWeight = 600.0;
+
+// ──────────────────────────────────────────────
+
 class OverlayConfirmation extends StatelessWidget {
   final String title;
   final String? highlight;
@@ -25,10 +53,15 @@ class OverlayConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      insetPadding: EdgeInsets.symmetric(horizontal: 16),
-      contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 28),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      backgroundColor: AppColors.green[50],
+      insetPadding: EdgeInsets.symmetric(horizontal: _dialogHorizontalInset),
+      contentPadding: EdgeInsets.symmetric(
+        horizontal: _contentHorizontalPadding,
+        vertical: _contentVerticalPadding,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(_dialogRadius),
+      ),
+      backgroundColor: _dialogBackgroundColor,
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
@@ -37,24 +70,24 @@ class OverlayConfirmation extends StatelessWidget {
             title,
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xff4b4b4b),
-              fontVariations: [FontVariation("wght", 400)],
-              fontSize: 18,
+              color: _titleColor,
+              fontVariations: [FontVariation("wght", _titleFontWeight)],
+              fontSize: _titleFontSize,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: _titleHighlightSpacing),
           if (highlight != null)
             Text(
               highlight!,
               style: TextStyle(
-                color: AppColors.green,
-                fontSize: 20,
-                fontVariations: [FontVariation("wght", 600)],
+                color: _highlightColor,
+                fontSize: _highlightFontSize,
+                fontVariations: [FontVariation("wght", _highlightFontWeight)],
               ),
             ),
-          const SizedBox(height: 20),
+          const SizedBox(height: _buttonsTopSpacing),
           Row(
-            spacing: 12,
+            spacing: _buttonSpacing,
             children: [
               if (buttonTextLeft != null)
                 Expanded(

@@ -1,6 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:template/utils/app_colors.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _indicatorBackgroundColor = AppColors.green[400]!;
+final _indicatorShadowColor = AppColors.green[800]!;
+
+// Sizing
+const _thresholdMin = 80.0;
+const _thresholdMax = 200.0;
+const _edgeOffset = 100.0;
+const _iconSize = 32.0;
+const _indicatorPadding = 4.0;
+
+// Shadow
+const _shadowOffset = Offset(0, 2);
+const _shadowSpread = 2.0;
+const _shadowBlur = 5.0;
+const _shadowAlpha = 100;
+
+// ──────────────────────────────────────────────
+
 class PullToRefresh extends StatefulWidget {
   final Widget child;
   final Future<void> Function() onRefresh;
@@ -21,10 +44,6 @@ class PullToRefreshState extends State<PullToRefresh> {
   bool isRefreshing = false;
   double beginY = 0;
   double size = 0;
-  final double thresholdMin = 80;
-  final double thresholdMax = 200;
-  final double edgeOffset = 100;
-  final double iconSize = 32;
 
   @override
   Widget build(BuildContext context) {
@@ -41,15 +60,15 @@ class PullToRefreshState extends State<PullToRefresh> {
               if (widget.controller != null && widget.controller!.offset <= 0) {
                 if (notification is ScrollStartNotification) {
                   if (notification.dragDetails != null) {
-                    start(notification.dragDetails);
+                    start(notification.dragDetails!);
                   }
                 } else if (notification is ScrollUpdateNotification) {
                   if (notification.dragDetails != null) {
-                    update(notification.dragDetails);
+                    update(notification.dragDetails!);
                   }
                 } else if (notification is ScrollEndNotification) {
                   if (notification.dragDetails != null) {
-                    end(notification.dragDetails);
+                    end(notification.dragDetails!);
                   }
                 }
               }
@@ -64,23 +83,23 @@ class PullToRefreshState extends State<PullToRefresh> {
             ),
           ),
           Positioned(
-            top: getLoadingPosition - iconSize,
+            top: getLoadingPosition - _iconSize,
             child: Opacity(
               opacity: getOpacity,
               child: SafeArea(
                 child: Container(
-                  padding: EdgeInsets.all(4),
-                  height: iconSize,
-                  width: iconSize,
+                  padding: EdgeInsets.all(_indicatorPadding),
+                  height: _iconSize,
+                  width: _iconSize,
                   decoration: BoxDecoration(
-                    color: AppColors.green[400],
+                    color: _indicatorBackgroundColor,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        offset: Offset(0, 2),
-                        color: AppColors.green[800]!.withAlpha(100),
-                        spreadRadius: 2,
-                        blurRadius: 5,
+                        offset: _shadowOffset,
+                        color: _indicatorShadowColor.withAlpha(_shadowAlpha),
+                        spreadRadius: _shadowSpread,
+                        blurRadius: _shadowBlur,
                       ),
                     ],
                   ),
@@ -94,47 +113,47 @@ class PullToRefreshState extends State<PullToRefresh> {
     );
   }
 
-  void end(details) {
+  void end(DragEndDetails details) {
     setState(() {
-      if (size > thresholdMin && !isRefreshing) {
+      if (size > _thresholdMin && !isRefreshing) {
         _refresh();
       }
       size = 0;
     });
   }
 
-  void update(details) {
+  void update(DragUpdateDetails details) {
     setState(() {
       final temp = details.localPosition.dy - beginY;
       if (temp > 0 && !isRefreshing) {
-        size = temp < thresholdMax ? temp : thresholdMax;
+        size = temp < _thresholdMax ? temp : _thresholdMax;
       } else {
         size = 0;
       }
     });
   }
 
-  void start(details) {
+  void start(DragStartDetails details) {
     setState(() {
       beginY = details.localPosition.dy;
     });
   }
 
   double get getLoadingPosition {
-    if (size > edgeOffset || isRefreshing) {
-      return edgeOffset;
+    if (size > _edgeOffset || isRefreshing) {
+      return _edgeOffset;
     } else {
       return size;
     }
   }
 
   double get getOpacity {
-    if (isRefreshing || size > edgeOffset) {
+    if (isRefreshing || size > _edgeOffset) {
       return 1;
     } else if (size == 0) {
       return 0;
-    } else if (size <= edgeOffset) {
-      return size / edgeOffset;
+    } else if (size <= _edgeOffset) {
+      return size / _edgeOffset;
     }
 
     return 0;

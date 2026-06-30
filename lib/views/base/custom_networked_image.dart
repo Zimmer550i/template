@@ -6,6 +6,29 @@ import 'package:template/utils/app_colors.dart';
 import 'package:template/utils/app_texts.dart';
 import 'package:shimmer/shimmer.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _errorBackgroundColor = AppColors.gray.shade200;
+final _errorIconColor = AppColors.gray.shade400;
+final _errorTextColor = AppColors.gray.shade400;
+final _shimmerBaseColor = AppColors.green.shade300;
+final _shimmerHighlightColor = AppColors.green[25]!;
+const _shimmerChildColor = Colors.white;
+
+// Sizing
+const _defaultRadius = 10.0;
+
+// Animation
+const _shimmerDuration = Duration(milliseconds: 800);
+
+// Typography
+final _errorTextStyle = AppTexts.tsmr;
+
+// ──────────────────────────────────────────────
+
 class CustomNetworkedImage extends StatelessWidget {
   final String? url;
   final File? file;
@@ -21,7 +44,7 @@ class CustomNetworkedImage extends StatelessWidget {
     this.randomSeed,
     this.height,
     this.width,
-    this.radius = 10,
+    this.radius = _defaultRadius,
     this.fit = BoxFit.cover,
     this.shimmer = true,
     this.file,
@@ -37,12 +60,11 @@ class CustomNetworkedImage extends StatelessWidget {
           ? Container(
               height: height,
               width: width,
-              decoration: BoxDecoration(color: AppColors.gray.shade200),
+              decoration: BoxDecoration(color: _errorBackgroundColor),
               child: Center(child: Icon(Icons.error_outline_rounded)),
             )
           : CachedNetworkImage(
               imageUrl: url!,
-              // "https://picsum.photos/${randomSeed == null ? "" : "seed/$randomSeed/"}${(width ?? 400).toInt()}/${(height ?? 400).toInt()}",
               height: height,
               width: width,
               fit: fit,
@@ -50,19 +72,19 @@ class CustomNetworkedImage extends StatelessWidget {
                 return Container(
                   height: height,
                   width: width,
-                  color: AppColors.gray.shade200,
+                  color: _errorBackgroundColor,
                   child: Center(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.error, color: AppColors.gray.shade400),
+                        Icon(Icons.error, color: _errorIconColor),
                         Expanded(
                           child: Text(
                             error.toString(),
                             textAlign: TextAlign.center,
-                            style: AppTexts.tsmr.copyWith(
-                              color: AppColors.gray.shade400,
+                            style: _errorTextStyle.copyWith(
+                              color: _errorTextColor,
                             ),
                           ),
                         ),
@@ -73,13 +95,13 @@ class CustomNetworkedImage extends StatelessWidget {
               },
               placeholder: (context, url) {
                 return Shimmer.fromColors(
-                  baseColor: AppColors.green.shade300,
-                  highlightColor: AppColors.green[25]!,
-                  period: Duration(milliseconds: 800),
+                  baseColor: _shimmerBaseColor,
+                  highlightColor: _shimmerHighlightColor,
+                  period: _shimmerDuration,
                   child: Container(
                     height: height ?? width,
                     width: width ?? height,
-                    color: Colors.white,
+                    color: _shimmerChildColor,
                   ),
                 );
               },

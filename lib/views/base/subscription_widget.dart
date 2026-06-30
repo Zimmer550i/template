@@ -5,6 +5,52 @@ import 'package:template/views/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Card colors
+final _cardBackgroundColor = AppColors.green.shade400;
+const _cardBorderColor = AppColors.green;
+const _dividerColor = AppColors.green;
+
+// Icon box
+const _iconBoxColor = AppColors.green;
+const _iconBoxSize = 50.0;
+const _iconBoxRadius = 16.0;
+
+// Title colors
+final _premiumTitleColor = AppColors.green[50]!;
+final _normalTitleColor = AppColors.green.shade200;
+final _premiumSubtitleColor = AppColors.green;
+final _normalSubtitleColor = AppColors.green[50]!;
+
+// Feature list colors
+final _featuresLabelColor = AppColors.green[50]!;
+final _featureTextColor = AppColors.green[100]!;
+
+// Sizing
+const _cardRadius = 16.0;
+const _headerHorizontalPadding = 35.0;
+const _headerTopPadding = 24.0;
+const _headerBottomPadding = 20.0;
+const _headerItemSpacing = 16.0;
+const _dividerHeight = 0.5;
+const _featuresTopSpacing = 20.0;
+const _featuresHorizontalPadding = 35.0;
+const _featureItemSpacing = 12.0;
+const _featureIconTextSpacing = 8.0;
+const _buttonTopSpacing = 24.0;
+const _buttonHorizontalPadding = 18.0;
+const _bottomSpacing = 20.0;
+
+// Typography
+final _titleStyle = AppTexts.tlgm;
+final _featuresLabelStyle = AppTexts.tmdm;
+final _featureItemStyle = AppTexts.tmdm;
+
+// ──────────────────────────────────────────────
+
 class SubscriptionWidget extends StatelessWidget {
   final String icon;
   final String title;
@@ -50,23 +96,28 @@ class SubscriptionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.green.shade400,
-        borderRadius: BorderRadius.circular(16),
-        border: isPurchased ? Border.all(color: AppColors.green) : null,
+        color: _cardBackgroundColor,
+        borderRadius: BorderRadius.circular(_cardRadius),
+        border: isPurchased ? Border.all(color: _cardBorderColor) : null,
       ),
       child: Column(
         children: [
           Padding(
-            padding: EdgeInsets.only(left: 35, right: 35, top: 24, bottom: 20),
+            padding: EdgeInsets.only(
+              left: _headerHorizontalPadding,
+              right: _headerHorizontalPadding,
+              top: _headerTopPadding,
+              bottom: _headerBottomPadding,
+            ),
             child: Row(
-              spacing: 16,
+              spacing: _headerItemSpacing,
               children: [
                 Container(
-                  height: 50,
-                  width: 50,
+                  height: _iconBoxSize,
+                  width: _iconBoxSize,
                   decoration: BoxDecoration(
-                    color: AppColors.green,
-                    borderRadius: BorderRadius.circular(16),
+                    color: _iconBoxColor,
+                    borderRadius: BorderRadius.circular(_iconBoxRadius),
                   ),
                   child: Center(child: SvgPicture.asset(icon)),
                 ),
@@ -75,18 +126,18 @@ class SubscriptionWidget extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: AppTexts.tlgm.copyWith(
+                      style: _titleStyle.copyWith(
                         color: isPremium
-                            ? AppColors.green[50]
-                            : AppColors.green.shade200,
+                            ? _premiumTitleColor
+                            : _normalTitleColor,
                       ),
                     ),
                     Text(
                       subTitle,
-                      style: AppTexts.tlgm.copyWith(
+                      style: _titleStyle.copyWith(
                         color: isPremium
-                            ? AppColors.green
-                            : AppColors.green[50],
+                            ? _premiumSubtitleColor
+                            : _normalSubtitleColor,
                       ),
                     ),
                   ],
@@ -95,30 +146,30 @@ class SubscriptionWidget extends StatelessWidget {
             ),
           ),
           Container(
-            height: 0.5,
+            height: _dividerHeight,
             width: double.infinity,
-            color: AppColors.green,
+            color: _dividerColor,
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: _featuresTopSpacing),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 35),
+            padding: EdgeInsets.symmetric(horizontal: _featuresHorizontalPadding),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: 12,
+              spacing: _featureItemSpacing,
               children: [
                 Text(
                   "Features",
-                  style: AppTexts.tmdm.copyWith(color: AppColors.green[50]),
+                  style: _featuresLabelStyle.copyWith(color: _featuresLabelColor),
                 ),
                 ...pros.map((e) {
                   return Row(
-                    spacing: 8,
+                    spacing: _featureIconTextSpacing,
                     children: [
-                      SvgPicture.asset(AppIcons.tickCircle),
+                      SvgPicture.asset(AppIcons.person),
                       Text(
                         e,
-                        style: AppTexts.tmdm.copyWith(
-                          color: AppColors.green[100],
+                        style: _featureItemStyle.copyWith(
+                          color: _featureTextColor,
                         ),
                       ),
                     ],
@@ -126,13 +177,13 @@ class SubscriptionWidget extends StatelessWidget {
                 }),
                 ...cons.map((e) {
                   return Row(
-                    spacing: 8,
+                    spacing: _featureIconTextSpacing,
                     children: [
-                      SvgPicture.asset(AppIcons.closeCircle),
+                      SvgPicture.asset(AppIcons.person),
                       Text(
                         e,
-                        style: AppTexts.tmdm.copyWith(
-                          color: AppColors.green[100],
+                        style: _featureItemStyle.copyWith(
+                          color: _featureTextColor,
                         ),
                       ),
                     ],
@@ -141,17 +192,17 @@ class SubscriptionWidget extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: _buttonTopSpacing),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 18),
+            padding: const EdgeInsets.symmetric(horizontal: _buttonHorizontalPadding),
             child: CustomButton(
               text: isPurchased ? "Current Plan" : "Choose Plan",
-              leading: isPurchased ? AppIcons.tickCircle : null,
+              leading: isPurchased ? AppIcons.person : null,
               isSecondary: isPurchased,
               onTap: isPurchased ? null : onTap,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: _bottomSpacing),
         ],
       ),
     );

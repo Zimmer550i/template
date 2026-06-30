@@ -4,6 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:template/utils/app_texts.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _backgroundColor = AppColors.green[400]!;
+final _titleColor = AppColors.green[600]!;
+final _hintColor = AppColors.green.shade200;
+final _selectedTextColor = AppColors.green.shade50;
+final _optionTextColor = AppColors.green[50]!;
+final _dividerColor = AppColors.green[400]!;
+
+// Title typography
+const _titleFontSize = 16.0;
+const _titleFontWeight = 600.0;
+
+// Option typography
+const _optionFontSize = 14.0;
+
+// Sizing
+const _defaultRadius = 24.0;
+const _horizontalPadding = 8.0;
+const _titleSpacing = 8.0;
+const _dividerWidth = 0.5;
+
+// Animation
+const _animationDuration = Duration(milliseconds: 100);
+
+// Typography
+final _selectedTextStyle = AppTexts.tsmr;
+
+// ──────────────────────────────────────────────
+
 class CustomDropDown extends StatefulWidget {
   final String? title;
   final int? initialPick;
@@ -20,7 +53,7 @@ class CustomDropDown extends StatefulWidget {
     this.hintText,
     required this.options,
     this.onChanged,
-    this.radius = 24,
+    this.radius = _defaultRadius,
     this.height,
     this.width,
   });
@@ -32,7 +65,6 @@ class CustomDropDown extends StatefulWidget {
 class _CustomDropDownState extends State<CustomDropDown> {
   String? currentVal;
   bool isExpanded = false;
-  Duration defaultDuration = const Duration(milliseconds: 100);
 
   @override
   void initState() {
@@ -46,15 +78,15 @@ class _CustomDropDownState extends State<CustomDropDown> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 8,
+      spacing: _titleSpacing,
       children: [
         if (widget.title != null)
           Text(
             widget.title!,
             style: TextStyle(
-              fontVariations: [FontVariation("wght", 600)],
-              fontSize: 16,
-              color: AppColors.green[600],
+              fontVariations: [FontVariation("wght", _titleFontWeight)],
+              fontSize: _titleFontSize,
+              color: _titleColor,
             ),
           ),
 
@@ -65,9 +97,9 @@ class _CustomDropDownState extends State<CustomDropDown> {
             });
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(horizontal: _horizontalPadding),
             decoration: BoxDecoration(
-              color: AppColors.green[400],
+              color: _backgroundColor,
               borderRadius: BorderRadius.circular(widget.radius),
             ),
             child: Column(
@@ -80,19 +112,19 @@ class _CustomDropDownState extends State<CustomDropDown> {
                       currentVal == null
                           ? Text(
                               widget.hintText ?? "Select One",
-                              style: AppTexts.tsmr.copyWith(
-                                color: AppColors.green.shade200,
+                              style: _selectedTextStyle.copyWith(
+                                color: _hintColor,
                               ),
                             )
                           : Text(
                               currentVal!,
-                              style: AppTexts.tsmr.copyWith(
-                                color: AppColors.green.shade50,
+                              style: _selectedTextStyle.copyWith(
+                                color: _selectedTextColor,
                               ),
                             ),
                       const Spacer(),
                       AnimatedRotation(
-                        duration: defaultDuration,
+                        duration: _animationDuration,
                         turns: isExpanded ? 0.5 : 1,
                         child: SvgPicture.asset(AppIcons.arrowDown),
                       ),
@@ -100,7 +132,7 @@ class _CustomDropDownState extends State<CustomDropDown> {
                   ),
                 ),
                 AnimatedSize(
-                  duration: defaultDuration,
+                  duration: _animationDuration,
                   child: isExpanded
                       ? Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,8 +153,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
                                   decoration: BoxDecoration(
                                     border: Border(
                                       top: BorderSide(
-                                        color: AppColors.green[400]!,
-                                        width: 0.5,
+                                        color: _dividerColor,
+                                        width: _dividerWidth,
                                       ),
                                     ),
                                   ),
@@ -131,8 +163,8 @@ class _CustomDropDownState extends State<CustomDropDown> {
                                     child: Text(
                                       e,
                                       style: TextStyle(
-                                        color: AppColors.green[50],
-                                        fontSize: 14,
+                                        color: _optionTextColor,
+                                        fontSize: _optionFontSize,
                                       ),
                                     ),
                                   ),

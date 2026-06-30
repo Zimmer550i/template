@@ -5,6 +5,31 @@ import 'package:template/utils/app_icons.dart';
 import 'package:template/utils/app_texts.dart';
 import 'package:template/utils/custom_svg.dart';
 
+// ──────────────────────────────────────────────
+// CUSTOMIZABLE VARIABLES — Change these to style
+// ──────────────────────────────────────────────
+
+// Colors
+final _backgroundColor = AppColors.green[600]!;
+final _titleColor = AppColors.green[50]!;
+final _dividerColor = AppColors.green.shade300;
+
+// Sizing
+const _appBarHeight = 44.0;
+const _leadingStartPadding = 12.0;
+const _leadingSize = 32.0;
+const _leadingRadius = 8.0;
+const _titleLeftPadding = 18.0;
+const _dividerHeight = 0.5;
+
+// Typography
+final _titleStyle = AppTexts.tsmr;
+
+// Icons
+const _backIcon = AppIcons.back;
+
+// ──────────────────────────────────────────────
+
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool hasLeading;
@@ -16,39 +41,39 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.green[600],
+      backgroundColor: _backgroundColor,
       automaticallyImplyLeading: false,
       titleSpacing: 0,
       title: SizedBox(
-        height: 44,
+        height: _appBarHeight,
         child: Row(
           children: [
-            SizedBox(width: 12),
+            SizedBox(width: _leadingStartPadding),
             InkWell(
               onTap: () => hasLeading ? Get.back() : null,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(_leadingRadius),
               child: SizedBox(
-                height: 32,
-                width: 32,
+                height: _leadingSize,
+                width: _leadingSize,
                 child: hasLeading
-                    ? Center(child: CustomSvg(asset: AppIcons.back))
+                    ? Center(child: CustomSvg(asset: _backIcon))
                     : const SizedBox(),
               ),
             ),
-            const SizedBox(width: 18),
+            const SizedBox(width: _titleLeftPadding),
             Text(
               title,
-              style: AppTexts.tsmr.copyWith(color: AppColors.green[50]),
+              style: _titleStyle.copyWith(color: _titleColor),
             ),
           ],
         ),
       ),
       bottom: PreferredSize(
-        preferredSize: Size.fromHeight(0.5),
+        preferredSize: Size.fromHeight(_dividerHeight),
         child: Container(
-          height: 0.5,
+          height: _dividerHeight,
           width: double.infinity,
-          color: AppColors.green.shade300,
+          color: _dividerColor,
         ),
       ),
     );

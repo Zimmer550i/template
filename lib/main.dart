@@ -1,3 +1,4 @@
+import 'package:template/themes/dark_theme.dart';
 import 'package:template/themes/light_theme.dart';
 import 'package:template/utils/app_colors.dart';
 import 'package:template/utils/app_constants.dart';
@@ -37,8 +38,7 @@ class MyApp extends StatelessWidget {
             return GetMaterialApp(
               title: AppConstants.APP_NAME,
               debugShowCheckedModeBanner: false,
-              // theme: themeController.darkTheme ? dark() : light(),
-              theme: light(),
+              theme: themeController.darkTheme ? dark() : light(),
               defaultTransition: Transition.cupertino,
               locale: localizeController.locale,
               translations: Messages(languages: languages),
